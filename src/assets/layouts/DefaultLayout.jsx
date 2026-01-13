@@ -32,7 +32,7 @@ export default function DefaultLayout() {
     return (
         <>
             <header>
-                <nav className="navbar navbar-expand-lg bg-body-secondary">
+                <nav className="navbar navbar-expand-lg text-bg-dark">
                     <div className="container-fluid px-4">
                         <Link className="navbar-brand" to="/">
                             <img className="p-3" src="/logo.png" alt="logo" />
