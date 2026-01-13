@@ -3,26 +3,17 @@ import { createContext, useEffect, useState } from "react";
 const GlobalContext = createContext();
 
 function GlobalProvider({ children }) {
-    const [iphones, setIphones] = useState([]);
-
-    const [ipads, setIpads] = useState([]);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3001" + "/iphones")
+        fetch("http://localhost:3001/products")
             .then((res) => res.json())
-            .then((data) => setIphones(data))
-            .catch((err) => console.error(err));
-
-        fetch("http://localhost:3001" + "/ipads")
-            .then((res) => res.json())
-            .then((data) => setIpads(data))
+            .then((data) => setProducts(data))
             .catch((err) => console.error(err));
     }, []);
 
     return (
-        <GlobalContext.Provider
-            value={{ iphones, setIphones, ipads, setIpads }}
-        >
+        <GlobalContext.Provider value={{ products, setProducts }}>
             {children}
         </GlobalContext.Provider>
     );

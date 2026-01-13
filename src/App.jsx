@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./assets/pages/HomePage";
 import DefaultLayout from "./assets/layouts/DefaultLayout";
 import NotFoundPage from "./assets/pages/NotFoundPage";
+import SingleProductPage from "./assets/pages/SingleProductPage";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                     <Routes>
                         <Route Component={DefaultLayout}>
                             <Route path="/" Component={HomePage} />
+                            <Route path="/:id" Component={SingleProductPage} />
                             <Route path="*" Component={NotFoundPage} />
                         </Route>
                     </Routes>

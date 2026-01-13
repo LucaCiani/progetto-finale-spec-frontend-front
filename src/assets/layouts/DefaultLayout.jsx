@@ -13,22 +13,21 @@ function debounce(callback, delay) {
 }
 
 export default function DefaultLayout() {
-    const { setIphones, setIpads } = useContext(GlobalContext);
+    const { setProducts } = useContext(GlobalContext);
 
     const [searchQuery, setSearchQuery] = useState("");
     const deboucedSearch = useCallback(debounce(setSearchQuery, 500), []);
 
     useEffect(() => {
-        fetch("http://localhost:3001" + `/iphones?search=${searchQuery}`)
+        const url =
+            searchQuery === ""
+                ? "http://localhost:3001/products"
+                : `http://localhost:3001/products?search=${searchQuery}`;
+        fetch(url)
             .then((res) => res.json())
-            .then((data) => setIphones(data))
+            .then((data) => setProducts(data))
             .catch((err) => console.error(err));
-
-        fetch("http://localhost:3001" + `/ipads?search=${searchQuery}`)
-            .then((res) => res.json())
-            .then((data) => setIpads(data))
-            .catch((err) => console.error(err));
-    }, [deboucedSearch]);
+    }, [searchQuery, setProducts]);
 
     return (
         <>
