@@ -1,24 +1,43 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import ProductCard from "../components/ProductCard";
 
 export default function HomePage() {
     const { products } = useContext(GlobalContext);
+    const [sortOrder, setSortOrder] = useState("az");
+
+    // Copia e ordina i prodotti in base all'ordinamento scelto
+    const sortedProducts = products
+        ? [...products].sort((a, b) => {
+              if (sortOrder === "az") {
+                  return a.title.localeCompare(b.title);
+              } else {
+                  return b.title.localeCompare(a.title);
+              }
+          })
+        : [];
 
     return (
         <>
             <div className="my-5 badge text-bg-dark text-wrap d-flex justify-content-center">
-                <p className="h1  ">ISPEZIONA E CONFRONTA I PRODOTTI!</p>
+                <p className="h1">ISPEZIONA E CONFRONTA I PRODOTTI!</p>
+            </div>
+            <div className="mb-4 d-flex justify-content-end">
+                <select
+                    className="form-select w-auto"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                >
+                    <option value="az">Ordina: A-Z</option>
+                    <option value="za">Ordina: Z-A</option>
+                </select>
             </div>
             <div className="mb-5 row row-cols-2 row row-cols-md-3 row row-cols-xl-4 g-5">
-                {products &&
-                    products.map((product) => {
-                        return (
-                            <div key={product.id} className="col">
-                                <ProductCard product={product} />
-                            </div>
-                        );
-                    })}
+                {sortedProducts.map((product) => (
+                    <div key={product.id} className="col">
+                        <ProductCard product={product} />
+                    </div>
+                ))}
             </div>
         </>
     );

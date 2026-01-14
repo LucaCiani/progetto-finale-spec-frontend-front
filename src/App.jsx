@@ -6,6 +6,7 @@ import HomePage from "./assets/pages/HomePage";
 import DefaultLayout from "./assets/layouts/DefaultLayout";
 import NotFoundPage from "./assets/pages/NotFoundPage";
 import SingleProductPage from "./assets/pages/SingleProductPage";
+import ComparatorPage from "./assets/pages/ComparatorPage";
 
 function App() {
     return (
@@ -16,6 +17,10 @@ function App() {
                         <Route Component={DefaultLayout}>
                             <Route path="/" Component={HomePage} />
                             <Route path="/:id" Component={SingleProductPage} />
+                            <Route
+                                path="/comparator"
+                                Component={ComparatorPage}
+                            />
                             <Route path="*" Component={NotFoundPage} />
                         </Route>
                     </Routes>

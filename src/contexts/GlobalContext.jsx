@@ -1,22 +1,39 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
-const GlobalContext = createContext();
+export const GlobalContext = createContext();
 
-function GlobalProvider({ children }) {
+export default function GlobalProvider({ children }) {
     const [products, setProducts] = useState([]);
+    const [comparator, setComparator] = useState([]);
 
-    useEffect(() => {
-        fetch("http://localhost:3001/products")
-            .then((res) => res.json())
-            .then((data) => setProducts(data))
-            .catch((err) => console.error(err));
-    }, []);
+    function addToComparator(product) {
+        setComparator((prev) => {
+            if (prev.find((p) => p.id === product.id) || prev.length >= 3)
+                return prev;
+            return [...prev, product];
+        });
+    }
+
+    function removeFromComparator(id) {
+        setComparator((prev) => prev.filter((p) => p.id !== id));
+    }
+
+    function clearComparator() {
+        setComparator([]);
+    }
 
     return (
-        <GlobalContext.Provider value={{ products, setProducts }}>
+        <GlobalContext.Provider
+            value={{
+                products,
+                setProducts,
+                comparator,
+                addToComparator,
+                removeFromComparator,
+                clearComparator,
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     );
 }
-
-export { GlobalContext, GlobalProvider };

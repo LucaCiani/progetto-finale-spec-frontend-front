@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 function debounce(callback, delay) {
@@ -16,18 +16,36 @@ export default function DefaultLayout() {
     const { setProducts } = useContext(GlobalContext);
 
     const [searchQuery, setSearchQuery] = useState("");
-    const deboucedSearch = useCallback(debounce(setSearchQuery, 500), []);
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const navigate = useNavigate();
+
+    const deboucedSearch = useCallback(
+        debounce((value) => {
+            setSearchQuery(value);
+            navigate("/");
+        }, 500),
+        [navigate]
+    );
+
+    function handleCategoryChange(e) {
+        setSelectedCategory(e.target.value);
+        navigate("/");
+    }
 
     useEffect(() => {
-        const url =
-            searchQuery === ""
-                ? "http://localhost:3001/products"
-                : `http://localhost:3001/products?search=${searchQuery}`;
+        let url = "http://localhost:3001/products";
+        const params = [];
+        if (searchQuery) params.push(`search=${searchQuery}`);
+        if (selectedCategory) params.push(`category=${selectedCategory}`);
+        if (params.length) url += "?" + params.join("&");
+
         fetch(url)
             .then((res) => res.json())
             .then((data) => setProducts(data))
             .catch((err) => console.error(err));
-    }, [searchQuery, setProducts]);
+    }, [searchQuery, selectedCategory, setProducts]);
+
+    const { comparator } = useContext(GlobalContext);
 
     return (
         <>
@@ -46,7 +64,7 @@ export default function DefaultLayout() {
                             aria-expanded="false"
                             aria-label="Toggle navigation"
                         >
-                            <span className="navbar-toggler-icon"></span>
+                            <span className="text-light">APRI</span>
                         </button>
                         <div
                             className="collapse navbar-collapse"
@@ -58,7 +76,19 @@ export default function DefaultLayout() {
                                 placeholder="Cerca per nome..."
                                 onChange={(e) => deboucedSearch(e.target.value)}
                             />
+                            <select
+                                className="form-select ms-2"
+                                value={selectedCategory}
+                                onChange={handleCategoryChange}
+                            >
+                                <option value="">Tutte i prodotti</option>
+                                <option value="Iphone">Iphone</option>
+                                <option value="Ipad">Ipad</option>
+                            </select>
                         </div>
+                        <Link to="/comparator" className="btn btn-warning ms-3">
+                            Comparatore ({comparator.length}/3)
+                        </Link>
                     </div>
                 </nav>
             </header>
