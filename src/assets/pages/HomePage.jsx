@@ -32,7 +32,7 @@ export default function HomePage() {
                     <option value="za">Ordina: Z-A</option>
                 </select>
             </div>
-            <div className="mb-5 row row-cols-2 row row-cols-lg-3 row-cols-xl-4 g-5">
+            <div className="mb-5 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
                 {sortedProducts.map((product) => (
                     <div key={product.id} className="col">
                         <ProductCard product={product} />
