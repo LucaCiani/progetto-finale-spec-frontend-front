@@ -24,7 +24,7 @@ export default function HomePage() {
             </div>
             <div className="mb-4 d-flex justify-content-end">
                 <select
-                    className="form-select w-auto"
+                    className="form-select text-bg-dark w-auto"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
                 >
@@ -32,7 +32,7 @@ export default function HomePage() {
                     <option value="za">Ordina: Z-A</option>
                 </select>
             </div>
-            <div className="mb-5 row row-cols-2 row row-cols-md-3 row row-cols-xl-4 g-5">
+            <div className="mb-5 row row-cols-2 row row-cols-lg-3 row-cols-xl-4 g-5">
                 {sortedProducts.map((product) => (
                     <div key={product.id} className="col">
                         <ProductCard product={product} />

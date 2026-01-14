@@ -7,7 +7,7 @@ export default function ComparatorPage() {
         useContext(GlobalContext);
 
     return (
-        <div className="container my-5">
+        <>
             <h2 className="mb-4 text-center">Comparatore Prodotti</h2>
             {comparator.length === 0 ? (
                 <p className="text-center">Nessun prodotto nel comparatore.</p>
@@ -15,7 +15,7 @@ export default function ComparatorPage() {
                 <>
                     <div className="d-flex justify-content-center mb-3">
                         <button
-                            className="btn btn-danger"
+                            className="btn btn-outline-danger"
                             onClick={clearComparator}
                         >
                             Svuota comparatore
@@ -26,7 +26,7 @@ export default function ComparatorPage() {
                             <div key={product.id} className="col">
                                 <ProductCard product={product} />
                                 <button
-                                    className="btn btn-outline-danger w-100 mt-2"
+                                    className="btn btn-warning w-100 mt-2"
                                     onClick={() =>
                                         removeFromComparator(product.id)
                                     }
@@ -38,6 +38,6 @@ export default function ComparatorPage() {
                     </div>
                 </>
             )}
-        </div>
+        </>
     );
 }

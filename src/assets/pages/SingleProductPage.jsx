@@ -5,7 +5,8 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 export default function SingleProductPage() {
     const { id } = useParams();
     const [singleProduct, setSingleProduct] = useState();
-    const { comparator, addToComparator } = useContext(GlobalContext);
+    const { comparator, addToComparator, toggleFavorite, isFavorite } =
+        useContext(GlobalContext);
 
     useEffect(() => {
         fetch(`http://localhost:3001/products/${id}`)
@@ -17,6 +18,7 @@ export default function SingleProductPage() {
         singleProduct &&
         comparator.some((p) => p.id === singleProduct.product.id);
     const isFull = comparator.length >= 3;
+    const favorite = singleProduct && isFavorite(singleProduct.product.id);
 
     console.log(singleProduct);
 
@@ -27,7 +29,7 @@ export default function SingleProductPage() {
                     <p className="h1  ">{singleProduct.product.title}</p>
                 </div>
                 <button
-                    className="btn btn-dark mb-4"
+                    className="btn btn-dark m-3"
                     disabled={isInComparator || isFull}
                     onClick={() => addToComparator(singleProduct.product)}
                 >
@@ -36,6 +38,14 @@ export default function SingleProductPage() {
                         : isFull
                         ? "Comparatore pieno"
                         : "Compara"}
+                </button>
+                <button
+                    className={`btn flex-fill m-3 ${
+                        favorite ? "btn-danger" : "btn-outline-danger"
+                    }`}
+                    onClick={() => toggleFavorite(singleProduct.product)}
+                >
+                    <span className="fw-bold">{favorite ? "♥" : "♡"}</span>
                 </button>
                 <div className="row row-cols-1 row-cols-xl-2 g-3 mb-5">
                     <div

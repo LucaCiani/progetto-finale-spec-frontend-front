@@ -1,10 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const GlobalContext = createContext();
 
 export default function GlobalProvider({ children }) {
     const [products, setProducts] = useState([]);
     const [comparator, setComparator] = useState([]);
+    const [favorites, setFavorites] = useState(() => {
+        const saved = localStorage.getItem("favorites");
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+    }, [favorites]);
 
     function addToComparator(product) {
         setComparator((prev) => {
@@ -22,6 +30,20 @@ export default function GlobalProvider({ children }) {
         setComparator([]);
     }
 
+    function toggleFavorite(product) {
+        setFavorites((prev) => {
+            if (prev.find((p) => p.id === product.id)) {
+                return prev.filter((p) => p.id !== product.id);
+            } else {
+                return [...prev, product];
+            }
+        });
+    }
+
+    function isFavorite(id) {
+        return favorites.some((p) => p.id === id);
+    }
+
     return (
         <GlobalContext.Provider
             value={{
@@ -31,6 +53,9 @@ export default function GlobalProvider({ children }) {
                 addToComparator,
                 removeFromComparator,
                 clearComparator,
+                favorites,
+                toggleFavorite,
+                isFavorite,
             }}
         >
             {children}
