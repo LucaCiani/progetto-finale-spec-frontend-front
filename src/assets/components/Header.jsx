@@ -20,6 +20,8 @@ export default function Header() {
     const [selectedCategory, setSelectedCategory] = useState("");
     const navigate = useNavigate();
 
+    // RICERCA DEBOUNCATA + RITORNO ALLA HOME
+
     const deboucedSearch = useCallback(
         debounce((value) => {
             setSearchQuery(value);
@@ -28,10 +30,14 @@ export default function Header() {
         [navigate]
     );
 
+    // RICERCA PER CATEGORIA + RITORNO ALLA HOME
+
     function handleCategoryChange(e) {
         setSelectedCategory(e.target.value);
         navigate("/");
     }
+
+    // FETCH CON QUERY
 
     useEffect(() => {
         let url = "http://localhost:3001/products";

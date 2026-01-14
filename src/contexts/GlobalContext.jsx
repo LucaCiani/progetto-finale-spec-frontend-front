@@ -5,6 +5,9 @@ export const GlobalContext = createContext();
 export default function GlobalProvider({ children }) {
     const [products, setProducts] = useState([]);
     const [comparator, setComparator] = useState([]);
+
+    // CONTROLLO SE CI SONO GIà DEI PREFERITI
+
     const [favorites, setFavorites] = useState(() => {
         const saved = localStorage.getItem("favorites");
         return saved ? JSON.parse(saved) : [];
@@ -21,6 +24,8 @@ export default function GlobalProvider({ children }) {
             return [...prev, product];
         });
     }
+
+    // PULIZIA COMPARATORE
 
     function removeFromComparator(id) {
         setComparator((prev) => prev.filter((p) => p.id !== id));

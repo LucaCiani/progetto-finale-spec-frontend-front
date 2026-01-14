@@ -6,6 +6,8 @@ export default function HomePage() {
     const { products } = useContext(GlobalContext);
     const [sortOrder, setSortOrder] = useState("az");
 
+    // LOGICA ORDINAMENTO
+
     const sortedProducts = useMemo(() => {
         return products
             ? [...products].sort((a, b) => {
@@ -24,6 +26,7 @@ export default function HomePage() {
                 <p className="h1">ISPEZIONA E CONFRONTA I PRODOTTI!</p>
             </div>
             <div className="mb-4 d-flex justify-content-end">
+                {/* SELCT ORDINAMENTO */}
                 <select
                     className="form-select text-bg-dark w-auto"
                     value={sortOrder}

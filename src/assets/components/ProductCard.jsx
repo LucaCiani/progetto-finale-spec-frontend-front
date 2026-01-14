@@ -6,6 +6,8 @@ const ProductCard = memo(({ product }) => {
     const { comparator, addToComparator, toggleFavorite, isFavorite } =
         useContext(GlobalContext);
 
+    // CONTROLLORI
+
     const isInComparator = useMemo(
         () => comparator.some((p) => p.id === product.id),
         [comparator, product.id]
@@ -35,6 +37,7 @@ const ProductCard = memo(({ product }) => {
                 </div>
             </Link>
             <div className="d-flex gap-2 mt-2">
+                {/* BOTTONE COMPARATORE */}
                 <button
                     className="btn btn-dark flex-fill"
                     disabled={isInComparator || isFull}
@@ -46,6 +49,7 @@ const ProductCard = memo(({ product }) => {
                         ? "Comparatore pieno"
                         : "Compara"}
                 </button>
+                {/* BOTTONE PREFERITI */}
                 <button
                     className={`btn flex-fill ${
                         favorite ? "btn-danger" : "btn-outline-danger"

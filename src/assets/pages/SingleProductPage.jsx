@@ -9,6 +9,8 @@ export default function SingleProductPage() {
     const { comparator, addToComparator, toggleFavorite, isFavorite } =
         useContext(GlobalContext);
 
+    // FETCH DEL SINGOLO PRODOTTO
+
     useEffect(() => {
         fetch(`http://localhost:3001/products/${id}`)
             .then((res) => {
@@ -18,6 +20,8 @@ export default function SingleProductPage() {
             .then((data) => setSingleProduct(data))
             .catch(() => navigate("percorso-inesistente"));
     }, [id, navigate]);
+
+    // CONTROLLORI
 
     const isInComparator = useMemo(
         () =>
@@ -69,6 +73,7 @@ export default function SingleProductPage() {
                     <span className="fw-bold">{favorite ? "♥" : "♡"}</span>
                 </button>
                 <div className="row row-cols-1 row-cols-xxl-2 g-3 mb-5">
+                    {/* --CAROSELLO-- */}
                     <div className="col">
                         <div
                             id="carouselExampleIndicators"
