@@ -1,10 +1,11 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function SingleProductPage() {
     const { id } = useParams();
     const [singleProduct, setSingleProduct] = useState();
+    const navigate = useNavigate();
     const { comparator, addToComparator, toggleFavorite, isFavorite } =
         useContext(GlobalContext);
 
@@ -14,14 +15,18 @@ export default function SingleProductPage() {
             .then((data) => setSingleProduct(data));
     }, [id]);
 
-    const isInComparator =
-        singleProduct &&
-        comparator.some((p) => p.id === singleProduct.product.id);
+    const isInComparator = useMemo(
+        () =>
+            singleProduct &&
+            comparator.some((p) => p.id === singleProduct.product.id),
+        [singleProduct, comparator]
+    );
     const isFull = comparator.length >= 3;
-    const favorite = singleProduct && isFavorite(singleProduct.product.id);
 
-    const navigate = useNavigate();
-
+    const favorite = useMemo(
+        () => singleProduct && isFavorite(singleProduct.product.id),
+        [singleProduct, isFavorite]
+    );
     console.log(singleProduct);
 
     if (singleProduct) {

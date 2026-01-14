@@ -1,13 +1,21 @@
-import { memo, useContext } from "react";
+import { memo, useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 const ProductCard = memo(({ product }) => {
     const { comparator, addToComparator, toggleFavorite, isFavorite } =
         useContext(GlobalContext);
-    const isInComparator = comparator.some((p) => p.id === product.id);
+
+    const isInComparator = useMemo(
+        () => comparator.some((p) => p.id === product.id),
+        [comparator, product.id]
+    );
     const isFull = comparator.length >= 3;
-    const favorite = isFavorite(product.id);
+
+    const favorite = useMemo(
+        () => isFavorite(product.id),
+        [isFavorite, product.id]
+    );
 
     return (
         <div className="h-100">

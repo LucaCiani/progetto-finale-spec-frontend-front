@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import ProductCard from "../components/ProductCard";
 
@@ -6,16 +6,17 @@ export default function HomePage() {
     const { products } = useContext(GlobalContext);
     const [sortOrder, setSortOrder] = useState("az");
 
-    // Copia e ordina i prodotti in base all'ordinamento scelto
-    const sortedProducts = products
-        ? [...products].sort((a, b) => {
-              if (sortOrder === "az") {
-                  return a.title.localeCompare(b.title);
-              } else {
-                  return b.title.localeCompare(a.title);
-              }
-          })
-        : [];
+    const sortedProducts = useMemo(() => {
+        return products
+            ? [...products].sort((a, b) => {
+                  if (sortOrder === "az") {
+                      return a.title.localeCompare(b.title);
+                  } else {
+                      return b.title.localeCompare(a.title);
+                  }
+              })
+            : [];
+    }, [products, sortOrder]);
 
     return (
         <>
