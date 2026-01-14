@@ -33,13 +33,17 @@ export default function HomePage() {
                     <option value="za">Ordina: Z-A</option>
                 </select>
             </div>
-            <div className="mb-5 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
-                {sortedProducts.map((product) => (
-                    <div key={product.id} className="col">
-                        <ProductCard product={product} />
-                    </div>
-                ))}
-            </div>
+            {sortedProducts.length ? (
+                <div className="mb-5 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-5">
+                    {sortedProducts.map((product) => (
+                        <div key={product.id} className="col">
+                            <ProductCard product={product} />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <h2 className="text-center">Prodotto non trovato!</h2>
+            )}
         </>
     );
 }

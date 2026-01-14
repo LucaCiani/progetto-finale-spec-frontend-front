@@ -11,9 +11,13 @@ export default function SingleProductPage() {
 
     useEffect(() => {
         fetch(`http://localhost:3001/products/${id}`)
-            .then((res) => res.json())
-            .then((data) => setSingleProduct(data));
-    }, [id]);
+            .then((res) => {
+                if (!res.ok) throw new Error("Not found");
+                return res.json();
+            })
+            .then((data) => setSingleProduct(data))
+            .catch(() => navigate("percorso-inesistente"));
+    }, [id, navigate]);
 
     const isInComparator = useMemo(
         () =>
