@@ -1,4 +1,4 @@
-import { memo, useContext, useMemo } from "react";
+import { memo, useCallback, useContext, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
@@ -18,6 +18,15 @@ const ProductCard = memo(({ product }) => {
         () => isFavorite(product.id),
         [isFavorite, product.id]
     );
+
+    // HANDLER MEMORIZZATI
+    const handleAddToComparator = useCallback(() => {
+        addToComparator(product);
+    }, [addToComparator, product]);
+
+    const handleToggleFavorite = useCallback(() => {
+        toggleFavorite(product);
+    }, [toggleFavorite, product]);
 
     return (
         <div className="h-100">
@@ -41,7 +50,7 @@ const ProductCard = memo(({ product }) => {
                 <button
                     className="btn btn-dark flex-fill"
                     disabled={isInComparator || isFull}
-                    onClick={() => addToComparator(product)}
+                    onClick={handleAddToComparator}
                 >
                     {isInComparator
                         ? "Nel comparatore"
@@ -54,7 +63,7 @@ const ProductCard = memo(({ product }) => {
                     className={`btn flex-fill ${
                         favorite ? "btn-danger" : "btn-outline-danger"
                     }`}
-                    onClick={() => toggleFavorite(product)}
+                    onClick={handleToggleFavorite}
                 >
                     <span className="fw-bold">{favorite ? "♥" : "♡"}</span>
                 </button>
