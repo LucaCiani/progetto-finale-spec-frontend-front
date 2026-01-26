@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ComparatorPage() {
     const { comparator, removeFromComparator, clearComparator } =
@@ -17,11 +17,11 @@ export default function ComparatorPage() {
             const products = await Promise.all(
                 comparator.map(async (product) => {
                     const res = await fetch(
-                        `http://localhost:3001/products/${product.id}`
+                        `http://localhost:3001/products/${product.id}`,
                     );
                     if (!res.ok) return null;
                     return await res.json();
-                })
+                }),
             );
             setDetailedProducts(products.filter(Boolean));
         }
@@ -69,18 +69,26 @@ export default function ComparatorPage() {
                                     </p>
                                 </div>
                                 <div className="mb-3">
-                                    <img
-                                        src={singleProduct.product.imagesUrl[0]}
-                                        className="d-block mx-auto"
-                                        alt={singleProduct.product.title}
-                                        style={{ maxWidth: "100%" }}
-                                    />
+                                    <Link
+                                        to={`/${singleProduct.product.id}`}
+                                        className="link-underline link-underline-opacity-0"
+                                    >
+                                        <img
+                                            src={
+                                                singleProduct.product
+                                                    .imagesUrl[0]
+                                            }
+                                            className="d-block mx-auto"
+                                            alt={singleProduct.product.title}
+                                            style={{ maxWidth: "100%" }}
+                                        />
+                                    </Link>
                                 </div>
                                 <button
                                     className="btn btn-warning w-100 my-3"
                                     onClick={() =>
                                         removeFromComparator(
-                                            singleProduct.product.id
+                                            singleProduct.product.id,
                                         )
                                     }
                                 >
